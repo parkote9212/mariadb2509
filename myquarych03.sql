@@ -1,0 +1,21 @@
+-- 삭제될 테이블을 만든다
+CREATE TABLE deletedMemberTBL(
+memberID CHAR(8),
+memberName CHAR(5),
+memberAddress CHAR(20),
+deletedDate DATE -- 삭제한날짜
+);
+
+--트리거 생성
+delimiter //
+CREATE TRIGGER trg_deletedmemberTBL --트리거 이름
+	AFTER DELETE -- 삭제 후에 작동하게 지정 
+	ON membertbl --트리거를 부착할 테이블
+	FOR EACH ROW -- 각 행마다 적용시킴
+BEGIN
+	-- OLD 테이블의 내용을 백업 테이블에 삽입
+	INSERT INTO deletedmembertbl
+		VALUES (OLD.memberID, OLD.memberName, OLD.memberAddress, CURDATE());
+END //
+delimiter;
+
