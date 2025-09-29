@@ -29,5 +29,4 @@ FROM book B
  	
 SELECT title '책제목', price '가격'
 FROM book
-ORDER BY price desc
-LIMIT 1; 
+WHERE price = (SELECT MAX(price) FROM Book);
